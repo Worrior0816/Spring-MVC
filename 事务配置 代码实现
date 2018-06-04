@@ -1,0 +1,72 @@
+package cn.itcast.dao;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+
+public class OrdersDao {
+
+	//注入jdbcTemplate
+	private JdbcTemplate jdbcTemplate;
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+	
+	/*
+	 * 做对数据库操作的方法，不写业务操作
+	 * */
+	//小王少钱的方法
+	public void lessMoney() {
+		String sql = "update account set salary=salary-? where username=?";
+		jdbcTemplate.update(sql, 1000,"小王");
+	}
+	
+	//小马多钱的方法
+	public void moreMoney() {
+		String sql = "update account set salary=salary+? where username=?";
+		jdbcTemplate.update(sql, 1000,"小马");
+	}
+	
+}
+
+
+package cn.itcast.service;
+
+import cn.itcast.dao.OrdersDao;
+
+public class OrdersService {
+
+	private OrdersDao ordersDao;
+	public void setOrdersDao(OrdersDao ordersDao) {
+		this.ordersDao = ordersDao;
+	}
+	
+	//调用dao的方法
+	//业务逻辑层，写转账业务
+	public void accountMoney() {
+		//小王少1000
+		ordersDao.lessMoney();
+		
+		//出现异常
+		int i = 10/0;
+		
+		//小马多1000
+		ordersDao.moreMoney();
+	}
+}
+
+
+package cn.itcast.service;
+
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TestService {
+
+	@Test
+	public void testDemo() {
+		ApplicationContext context = 
+				new ClassPathXmlApplicationContext("bean1.xml");
+		OrdersService service = (OrdersService) context.getBean("ordersService");
+		service.accountMoney();
+	}
+}
