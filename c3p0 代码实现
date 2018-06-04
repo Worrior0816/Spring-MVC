@@ -1,0 +1,54 @@
+package cn.itcast.c3p0;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+
+public class UserDao {
+	
+	//得到JdbcTemplate对象
+	private JdbcTemplate jdbcTemplate;
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+
+	//添加操作
+	public void add() {
+		//创建jdbcTemplate对象
+//		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		String sql = "insert into user values(?,?)";
+		jdbcTemplate.update(sql, "李雷","520");
+	}
+
+}
+
+
+package cn.itcast.c3p0;
+
+public class UserService {
+
+	private UserDao userDao;
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+	
+	public void add() {
+		userDao.add();
+	}
+}
+
+
+package cn.itcast.c3p0;
+
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TestService {
+
+	@Test
+	public void testDemo() {
+		ApplicationContext context = 
+				new ClassPathXmlApplicationContext("bean1.xml");
+		UserService service = (UserService) context.getBean("userService");
+		service.add();
+	}
+}
