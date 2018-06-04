@@ -17,6 +17,9 @@
 	<bean id="book" class="cn.itcast.aop.Book"></bean>
 	<bean id="myBook" class="cn.itcast.aop.MyBook"></bean>
 	
+	<!-- 开启aop注解操作 -->
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	
 	<!-- 2 配置aop操作 -->
 	<aop:config>
 		<!-- 2.1 配置切入点 -->
